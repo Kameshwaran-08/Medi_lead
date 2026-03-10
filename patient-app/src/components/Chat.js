@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useRef, useEffect, useCallback } from "react";
 import axios from "axios";
+import API from "./api";
 
 const QUICK = [
   "I have chest pain 😰",
@@ -76,7 +77,7 @@ export default function Chat({ user }) {
 
   const loadAppointments = async () => {
     try {
-      const res = await axios.get(`/patient-appointments/${user.id}`);
+      const res = await axios.get(`${API}/patient-appointments/${user.id}`);
       setAppointments(res.data.appointments.filter(a => a.status === "Confirmed"));
     } catch {}
   };
@@ -96,7 +97,7 @@ export default function Chat({ user }) {
     const newHist = [...history, { role: "user", content: text }];
 
     try {
-      const res = await axios.post("/chat", {
+      const res = await axios.post(`${API}/chat`, {
         patient_id:           user.id,
         patient_name:         user.name,
         patient_mobile:       user.mobile || "",
@@ -130,7 +131,7 @@ export default function Chat({ user }) {
     setBooking(null);
     setLoading(true);
     try {
-      const res = await axios.post("/book-appointment", {
+      const res = await axios.post(`${API}/book-appointment`, {
         patient_id:    user.id,
         patient_name:  user.name,
         patient_mobile: user.mobile || "",
@@ -164,7 +165,7 @@ export default function Chat({ user }) {
     setShowCancelPicker(false);
     setLoading(true);
     try {
-      await axios.delete(`/appointments/${apt.id}`);
+      await axios.delete(`${API}/appointments/${apt.id}`);
       loadAppointments();
       setMessages(p => [...p, {
         role: "bot",
