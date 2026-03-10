@@ -104,7 +104,6 @@ const AnimatedBar = ({ rate, color }) => {
 
 export default function Dashboard({ admin, onLogout, theme, toggleTheme }) {
   const [tab, setTab]             = useState("pipeline");
-  const [prevTab, setPrevTab]     = useState("pipeline");
   const [analytics, setAna]       = useState(null);
   const [leads, setLeads]         = useState([]);
   const [apts, setApts]           = useState([]);
@@ -115,7 +114,6 @@ export default function Dashboard({ admin, onLogout, theme, toggleTheme }) {
   const [search, setSearch]       = useState("");
   const [scoreFilter, setScoreFilter] = useState("ALL");
   const [contentKey, setContentKey]   = useState(0);
-  const [sidebarReady, setSidebarReady] = useState(false);
 
   useEffect(() => { fetchAll(); setTimeout(() => setSidebarReady(true), 100); }, []);
 
