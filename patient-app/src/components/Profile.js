@@ -5,7 +5,7 @@ export default function Profile({ user }) {
   const [apts, setApts]     = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { fetchApts(); }, []);
+  useEffect(() => { fetchApts(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchApts = async () => {
     setLoading(true);
