@@ -3,3 +3,5 @@ uvicorn
 supabase
 python-dotenv
 groq
+python-telegram-bot==20.7
+httpx
