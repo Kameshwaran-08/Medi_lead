@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import API from "./api";
 
 export default function Auth({ onLogin, theme, toggleTheme }) {
   const [tab, setTab]     = useState("login");
@@ -20,11 +21,11 @@ export default function Auth({ onLogin, theme, toggleTheme }) {
     setLoading(true);
     try {
       if (tab === "signup") {
-        const res = await axios.post("/signup", { name, mobile: mob, password: pass, email });
+        const res = await axios.post(`${API}/signup`, { name, mobile: mob, password: pass, email });
         if (res.data.success) { setOk("Account created! Please log in."); setTab("login"); setName(""); setMob(""); setEmail(""); setPass(""); }
         else setErr(res.data.message);
       } else {
-        const res = await axios.post("/login", { mobile: mob, password: pass, role: "patient" });
+        const res = await axios.post(`${API}/login`, { mobile: mob, password: pass, role: "patient" });
         if (res.data.success) onLogin(res.data.user);
         else setErr(res.data.message);
       }
