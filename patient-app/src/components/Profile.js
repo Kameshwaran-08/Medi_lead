@@ -1,29 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import API from "./api";
 export default function Profile({ user }) {
   const [apts, setApts]     = useState([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => { fetchApts(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
   const fetchApts = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`/patient-appointments/${user.id}`);
+      const res = await axios.get(`${API}/patient-appointments/${user.id}`);
       setApts(res.data.appointments);
     } catch (e) {
       console.error("Failed to load appointments:", e);
     }
     setLoading(false);
   };
-
   return (
     <div className="profile-page">
       <h2>My Appointments</h2>
-
-      {/* Profile info */}
       <div className="pf-card">
         <div className="pf-head">🧑 Patient Profile</div>
         <div className="pf-body">
@@ -34,8 +29,6 @@ export default function Profile({ user }) {
           </div>
         </div>
       </div>
-
-      {/* Appointments */}
       <div className="pf-card">
         <div className="pf-head">📅 Appointment History</div>
         <div className="pf-body">
