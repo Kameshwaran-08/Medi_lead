@@ -4,10 +4,12 @@ uvicorn==0.29.0
 python-dotenv==1.0.0
 pydantic==2.7.1
 
-# Supabase — pinned to avoid proxy/httpx conflict on Python 3.14
+# Supabase
 supabase==2.4.2
 gotrue==2.4.2
-httpx==0.27.0
+
+# httpx — pinned to satisfy python-telegram-bot==20.7
+httpx==0.25.2
 
 # Groq
 groq==0.4.2
