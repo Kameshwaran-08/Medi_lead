@@ -17,7 +17,7 @@ app = FastAPI(title="MediLead API", version="3.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://medilead-dusky.vercel.app", "https://medileadwebchat.vercel.app"],
     allow_credentials=False,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
