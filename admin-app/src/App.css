@@ -1,0 +1,296 @@
+/* Admin app — global resets + animation system */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body, #root { height:100%; overflow:hidden; }
+body { -webkit-font-smoothing:antialiased; }
+
+/* ══════════════════════════════════════
+   KEYFRAMES
+══════════════════════════════════════ */
+
+@keyframes spin         { to { transform: rotate(360deg); } }
+@keyframes blink        { 0%,100%{opacity:1} 50%{opacity:.35} }
+@keyframes pulse-ring   { 0%{transform:scale(1);opacity:.7} 70%{transform:scale(2.2);opacity:0} 100%{transform:scale(2.2);opacity:0} }
+@keyframes float-orb-1  { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-30px) scale(1.06)} 66%{transform:translate(-15px,15px) scale(.95)} }
+@keyframes float-orb-2  { 0%,100%{transform:translate(0,0) scale(1)} 40%{transform:translate(-25px,18px) scale(1.08)} 70%{transform:translate(12px,-20px) scale(.94)} }
+@keyframes card-in      { from{opacity:0;transform:translateY(28px) scale(.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+@keyframes fade-up      { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fade-in      { from{opacity:0} to{opacity:1} }
+@keyframes slide-right  { from{opacity:0;transform:translateX(-14px)} to{opacity:1;transform:translateX(0)} }
+@keyframes slide-down   { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes shimmer      { 0%{background-position:200% center} 100%{background-position:-200% center} }
+@keyframes logo-breathe { 0%,100%{box-shadow:0 4px 16px #2563eb44} 50%{box-shadow:0 6px 28px #2563eb88} }
+@keyframes bar-fill     { from{width:0%} to{width:var(--bar-w)} }
+@keyframes count-up-glow{ 0%{text-shadow:none;transform:scale(1)} 50%{text-shadow:0 0 24px currentColor;transform:scale(1.04)} 100%{text-shadow:none;transform:scale(1)} }
+@keyframes tab-in       { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes row-in       { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
+@keyframes notif-bounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+
+/* ══════════════════════════════════════
+   PAGE LAYOUT
+══════════════════════════════════════ */
+
+.admin-auth {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f6ff, #e8f0ff, #f5f0ff);
+  background-size: 400% 400%;
+  animation: bg-shift 12s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes bg-shift {
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+
+/* ══════════════════════════════════════
+   BACKGROUND ORBS
+══════════════════════════════════════ */
+
+.admin-auth-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.48;
+  will-change: transform;
+}
+
+.admin-auth-orb-1 {
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, #6ea8ff, #4285f4);
+  top: -120px;
+  left: -140px;
+  animation: float-orb-1 9s ease-in-out infinite;
+}
+
+.admin-auth-orb-2 {
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle, #9ad0ff, #818cf8);
+  bottom: -130px;
+  right: -110px;
+  animation: float-orb-2 11s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════
+   CARD
+══════════════════════════════════════ */
+
+.admin-auth-card {
+  width: 390px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 38px;
+  border-radius: 22px;
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.9) inset,
+    0 24px 60px rgba(37,99,235,0.12),
+    0 8px 20px rgba(0,0,0,0.06);
+  position: relative;
+  z-index: 2;
+  animation: card-in 0.6s cubic-bezier(.22,.9,.36,1) both;
+  border: 1px solid rgba(255,255,255,0.7);
+}
+
+/* ══════════════════════════════════════
+   HEADER
+══════════════════════════════════════ */
+
+.auth-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+  animation: fade-up .5s .1s both;
+}
+
+.auth-logo-wrap {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.auth-logo-icon {
+  font-size: 22px;
+  margin-right: 6px;
+  transition: transform .3s;
+}
+.auth-logo-wrap:hover .auth-logo-icon { transform: rotate(-10deg) scale(1.15); }
+
+.auth-logo-text em {
+  font-style: normal;
+  color: #2b7cff;
+}
+
+/* ══════════════════════════════════════
+   THEME BUTTON
+══════════════════════════════════════ */
+
+.icon-btn {
+  border: none;
+  background: #f2f6ff;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background .2s, transform .2s;
+}
+.icon-btn:hover {
+  background: #e2ecff;
+  transform: rotate(20deg) scale(1.1);
+}
+
+/* ══════════════════════════════════════
+   BADGE
+══════════════════════════════════════ */
+
+.badge-admin {
+  display: inline-block;
+  background: linear-gradient(90deg, #edf3ff, #e8eeff);
+  color: #2b7cff;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  animation: fade-up .5s .2s both;
+  border: 1px solid #d4e3ff;
+}
+
+/* ══════════════════════════════════════
+   TEXT
+══════════════════════════════════════ */
+
+.admin-auth-card h2 {
+  margin: 6px 0;
+  font-size: 24px;
+  font-weight: 700;
+  animation: fade-up .5s .25s both;
+}
+
+.sub {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 22px;
+  animation: fade-up .5s .3s both;
+}
+
+/* ══════════════════════════════════════
+   ERROR
+══════════════════════════════════════ */
+
+.err {
+  background: #fff1f1;
+  color: #d92d2d;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  animation: fade-up .3s both;
+  border: 1px solid #fecaca;
+}
+
+/* ══════════════════════════════════════
+   FORM
+══════════════════════════════════════ */
+
+.form-group {
+  margin-bottom: 18px;
+  animation: fade-up .5s both;
+}
+.form-group:nth-child(1) { animation-delay: .35s; }
+.form-group:nth-child(2) { animation-delay: .42s; }
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: #374151;
+  transition: color .2s;
+}
+.form-group:focus-within label { color: #2b7cff; }
+
+.form-input {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  font-size: 14px;
+  background: #fafcff;
+  transition: all .25s cubic-bezier(.4,0,.2,1);
+}
+.form-input:focus {
+  outline: none;
+  border-color: #2b7cff;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(43,124,255,0.10), 0 2px 8px rgba(43,124,255,0.08);
+  transform: translateY(-1px);
+}
+.form-input:hover:not(:focus) {
+  border-color: #a5c0ff;
+}
+
+/* ══════════════════════════════════════
+   LOGIN BUTTON
+══════════════════════════════════════ */
+
+.submit-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 13px;
+  border-radius: 11px;
+  border: none;
+  background: linear-gradient(135deg, #2b7cff, #1a5cd8);
+  background-size: 200% 100%;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .25s cubic-bezier(.4,0,.2,1);
+  animation: fade-up .5s .5s both;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: .01em;
+  box-shadow: 0 4px 18px rgba(43,124,255,0.35);
+}
+.submit-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform .5s;
+}
+.submit-btn:hover::after { transform: translateX(100%); }
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(43,124,255,0.45);
+}
+.submit-btn:active { transform: translateY(0); }
+.submit-btn:disabled {
+  background: linear-gradient(135deg, #a9c4ff, #90adff);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+.submit-btn:disabled::after { display: none; }
+
+/* ══════════════════════════════════════
+   HINT
+══════════════════════════════════════ */
+
+.admin-hint {
+  text-align: center;
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 18px;
+  animation: fade-up .5s .6s both;
+}
